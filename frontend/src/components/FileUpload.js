@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import api from "../api"; // Import your API configuration
 
-function FileUpload({ onFileUpload }) {
+function FileUpload({ onFileUpload, fetchFiles }) {
   const [file, setFile] = useState(null);
   const [tag, setTag] = useState("");
   const [error, setError] = useState("");
@@ -36,6 +36,7 @@ function FileUpload({ onFileUpload }) {
         },
       });
       onFileUpload(response.data); // Trigger callback with uploaded file data
+      fetchFiles(); // Refresh the file list after uploading
       setFile(null);
       setTag("");
     } catch (error) {
