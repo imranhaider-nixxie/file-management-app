@@ -1,19 +1,26 @@
-// Increment view count for a file
-router.get('/files/view/:fileId', async (req, res) => {
-  const { fileId } = req.params;
+const express = require('express');
+const router = express.Router();
+const File = require('../models/File'); // Adjust the path based on your project structure
 
-  try {
-    const file = await File.findById(fileId);
-    if (!file) {
-      return res.status(404).send({ error: 'File not found' });
+// Other route handlers...
+
+// Share link route
+router.get('/share/:fileId', async (req, res) => {
+    try {
+        const { fileId } = req.params;
+        const file = await File.findById(fileId);
+
+        if (!file) {
+            return res.status(404).json({ message: "File not found" });
+        }
+
+        // Logic to generate the share link (you can customize this)
+        const shareLink = `http://http://142.93.160.50:5000/files/${fileId}`; // Update with your actual domain
+        res.json({ shareLink });
+    } catch (error) {
+        console.error("Error generating share link:", error);
+        res.status(500).json({ message: "Failed to generate share link." });
     }
-
-    // Increment view count
-    file.viewCount += 1;
-    await file.save();
-
-    res.status(200).send({ message: 'View count updated', file });
-  } catch (error) {
-    res.status(500).send({ error: 'Error updating view count' });
-  }
 });
+
+module.exports = router;
