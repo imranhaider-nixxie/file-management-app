@@ -24,14 +24,14 @@ function Dashboard() {
   const handleFileUpload = (newFile) => {
     setFiles((prevFiles) => [...prevFiles, newFile]);
     setSuccessMessage("File uploaded successfully!"); // Set success message
-    fetchFiles(); // Refresh the file list
   };
 
   return (
     <div>
       <h2>Dashboard</h2>
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-      <FileUpload onFileUpload={handleFileUpload} />
+      {/* Pass fetchFiles to FileUpload */}
+      <FileUpload onFileUpload={handleFileUpload} fetchFiles={fetchFiles} />
       <FileList files={files} />
     </div>
   );
