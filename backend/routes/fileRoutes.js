@@ -11,17 +11,31 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
-console.log("Auth Middleware:", authMiddleware);
-console.log("Upload File:", uploadFile);
-console.log("Get Files:", getFiles);
-console.log("Get File Stats:", getFileStats);
+ 
 
 router.post("/upload", authMiddleware, upload.single("file"), uploadFile);
 router.get("/", authMiddleware, getFiles);
 router.get("/statistics/:fileId", authMiddleware, getFileStats);
 router.get("/share/:fileId", shareFile);
+// Increment view count for a file
+router.get('/files/view/:fileId', async (req, res) => {
+  const { fileId } = req.params;
 
+  try {
+    const file = await File.findById(fileId);
+    if (!file) {
+      return res.status(404).send({ error: 'File not found' });
+    }
+
+    // Increment view count
+    file.viewCount += 1;
+    await file.save();
+
+    res.status(200).send({ message: 'View count updated', file });
+  } catch (error) {
+    res.status(500).send({ error: 'Error updating view count' });
+  }
+});
 
 
 module.exports = router;
