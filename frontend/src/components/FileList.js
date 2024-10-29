@@ -1,8 +1,8 @@
-import React from "react";
+import React from "react"; // No need for useState since it's not being used
 import api from "../api"; // Import your API configuration
 
 function FileList({ files }) { // Accept files as props
-  const [error, setError] = useState("");
+  const [error, setError] = React.useState(""); // You still need to manage error for sharing links
 
   const handleShareLink = async (fileId) => {
     try {
