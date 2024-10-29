@@ -1,28 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import api from "../api"; // Import your API configuration
 
-function FileList() {
-  const [files, setFiles] = useState([]);
+function FileList({ files }) { // Accept files as props
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    fetchFiles();
-  }, []);
-
-  const fetchFiles = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await api.get("/files", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setFiles(response.data.files);
-    } catch (error) {
-      console.error("Failed to fetch files", error);
-      setError("Failed to fetch files. Please try again.");
-    }
-  };
 
   const handleShareLink = async (fileId) => {
     try {
