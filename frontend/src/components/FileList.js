@@ -6,6 +6,10 @@ function FileList({ files }) { // Accept files as props
 
   const handleShareLink = async (fileId) => {
   try {
+    // First, increment the view count
+    await api.get(`/files/view/${fileId}`);
+
+    // Then, get the share link
     const response = await api.get(`/files/share/${fileId}`);
     const shareLink = response.data.shareLink;
 
@@ -28,6 +32,7 @@ function FileList({ files }) { // Accept files as props
     setError("Failed to generate share link.");
   }
 };
+
 
   return (
     <div>
